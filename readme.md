@@ -15,6 +15,6 @@ Formulaire valide:
 
 
 ## Me suivre
-['LinkedIn'](https://www.linkedin.com/in/claude-fassinou-5745361ab/)
-['Facebook'](https://web.facebook.com/claudy.web.927/)
-['Twitter'](https://twitter.com/devclaudy)
+[LinkedIn](https://www.linkedin.com/in/claude-fassinou-5745361ab/)
+[Facebook](https://web.facebook.com/claudy.web.927/)
+[Twitter](https://twitter.com/devclaudy)
