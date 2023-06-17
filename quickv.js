@@ -12,13 +12,13 @@
   var Ce = Object.getOwnPropertySymbols;
   var _t = Object.prototype.hasOwnProperty,
     bt = Object.prototype.propertyIsEnumerable;
-  var Ne = (M, y, _) =>
+  var Ae = (M, y, p) =>
       y in M
-        ? pt(M, y, { enumerable: !0, configurable: !0, writable: !0, value: _ })
-        : (M[y] = _),
+        ? pt(M, y, { enumerable: !0, configurable: !0, writable: !0, value: p })
+        : (M[y] = p),
     C = (M, y) => {
-      for (var _ in y || (y = {})) _t.call(y, _) && Ne(M, _, y[_]);
-      if (Ce) for (var _ of Ce(y)) bt.call(y, _) && Ne(M, _, y[_]);
+      for (var p in y || (y = {})) _t.call(y, p) && Ae(M, p, y[p]);
+      if (Ce) for (var p of Ce(y)) bt.call(y, p) && Ae(M, p, y[p]);
       return M;
     };
   const y = (t) => {
@@ -33,15 +33,26 @@
         return { ruleName: i, params: r };
       }
     },
-    _ = (t, e = ",") =>
+    p = (t, e = ",") =>
       typeof t != "string" ? [] : t.split(e).map((s) => s.trim()),
-    j = (t) => {
+    P = (t) => {
       throw new Error(`Please provide <<${t}>> rule arguments`);
     };
-  function he() {
+  function fe() {
     return new Date().toISOString();
   }
-  var Ae =
+  class X {
+    constructor(e) {
+      (this.argument = e), (this._pipe = "&pip;"), (this._space = "&esp;");
+    }
+    replacePipes() {
+      return this.argument.replace(new RegExp(this._pipe, "g"), "|");
+    }
+    replaceSpaces() {
+      return this.argument.replace(new RegExp(this._space, "g"), " ");
+    }
+  }
+  var Le =
     typeof globalThis != "undefined"
       ? globalThis
       : typeof window != "undefined"
@@ -62,22 +73,22 @@
   (function (t, e) {
     (function (s, i) {
       t.exports = i();
-    })(Ae, function () {
+    })(Le, function () {
       var s = 1e3,
         i = 6e4,
         r = 36e5,
         o = "millisecond",
-        m = "second",
-        f = "minute",
+        c = "second",
+        m = "minute",
         D = "hour",
-        A = "day",
+        L = "day",
         Y = "week",
         O = "month",
         Te = "quarter",
         B = "year",
-        W = "date",
+        k = "date",
         qe = "Invalid Date",
-        ft =
+        ct =
           /^(\d{4})[-/]?(\d{1,2})?[-/]?(\d{0,2})[Tt\s]*(\d{1,2})?:?(\d{1,2})?:?(\d{1,2})?[.:]?(\d+)?$/,
         mt =
           /\[([^\]]+)]|Y{1,4}|M{1,4}|D{1,2}|d{1,4}|H{1,2}|h{1,2}|a|A|m{1,2}|s{1,2}|Z{1,2}|SSS/g,
@@ -93,39 +104,39 @@
             ),
           ordinal: function (u) {
             var l = ["th", "st", "nd", "rd"],
-              a = u % 100;
-            return "[" + u + (l[(a - 20) % 10] || l[a] || l[0]) + "]";
+              n = u % 100;
+            return "[" + u + (l[(n - 20) % 10] || l[n] || l[0]) + "]";
           },
         },
-        le = function (u, l, a) {
+        oe = function (u, l, n) {
           var h = String(u);
           return !h || h.length >= l
             ? u
-            : "" + Array(l + 1 - h.length).join(a) + u;
+            : "" + Array(l + 1 - h.length).join(n) + u;
         },
         vt = {
-          s: le,
+          s: oe,
           z: function (u) {
             var l = -u.utcOffset(),
-              a = Math.abs(l),
-              h = Math.floor(a / 60),
-              n = a % 60;
-            return (l <= 0 ? "+" : "-") + le(h, 2, "0") + ":" + le(n, 2, "0");
+              n = Math.abs(l),
+              h = Math.floor(n / 60),
+              a = n % 60;
+            return (l <= 0 ? "+" : "-") + oe(h, 2, "0") + ":" + oe(a, 2, "0");
           },
-          m: function u(l, a) {
-            if (l.date() < a.date()) return -u(a, l);
-            var h = 12 * (a.year() - l.year()) + (a.month() - l.month()),
-              n = l.clone().add(h, O),
-              c = a - n < 0,
-              d = l.clone().add(h + (c ? -1 : 1), O);
-            return +(-(h + (a - n) / (c ? n - d : d - n)) || 0);
+          m: function u(l, n) {
+            if (l.date() < n.date()) return -u(n, l);
+            var h = 12 * (n.year() - l.year()) + (n.month() - l.month()),
+              a = l.clone().add(h, O),
+              d = n - a < 0,
+              f = l.clone().add(h + (d ? -1 : 1), O);
+            return +(-(h + (n - a) / (d ? a - f : f - a)) || 0);
           },
           a: function (u) {
             return u < 0 ? Math.ceil(u) || 0 : Math.floor(u);
           },
           p: function (u) {
             return (
-              { M: O, y: B, w: Y, d: A, D: W, h: D, m: f, s: m, ms: o, Q: Te }[
+              { M: O, y: B, w: Y, d: L, D: k, h: D, m, s: c, ms: o, Q: Te }[
                 u
               ] ||
               String(u || "")
@@ -137,93 +148,93 @@
             return u === void 0;
           },
         },
-        k = "en",
+        j = "en",
         V = {};
-      V[k] = gt;
-      var oe = function (u) {
+      V[j] = gt;
+      var ue = function (u) {
           return u instanceof K;
         },
-        Z = function u(l, a, h) {
-          var n;
-          if (!l) return k;
+        Z = function u(l, n, h) {
+          var a;
+          if (!l) return j;
           if (typeof l == "string") {
-            var c = l.toLowerCase();
-            V[c] && (n = c), a && ((V[c] = a), (n = c));
-            var d = l.split("-");
-            if (!n && d.length > 1) return u(d[0]);
+            var d = l.toLowerCase();
+            V[d] && (a = d), n && ((V[d] = n), (a = d));
+            var f = l.split("-");
+            if (!a && f.length > 1) return u(f[0]);
           } else {
             var v = l.name;
-            (V[v] = l), (n = v);
+            (V[v] = l), (a = v);
           }
-          return !h && n && (k = n), n || (!h && k);
+          return !h && a && (j = a), a || (!h && j);
         },
         E = function (u, l) {
-          if (oe(u)) return u.clone();
-          var a = typeof l == "object" ? l : {};
-          return (a.date = u), (a.args = arguments), new K(a);
+          if (ue(u)) return u.clone();
+          var n = typeof l == "object" ? l : {};
+          return (n.date = u), (n.args = arguments), new K(n);
         },
         g = vt;
       (g.l = Z),
-        (g.i = oe),
+        (g.i = ue),
         (g.w = function (u, l) {
           return E(u, { locale: l.$L, utc: l.$u, x: l.$x, $offset: l.$offset });
         });
       var K = (function () {
-          function u(a) {
-            (this.$L = Z(a.locale, null, !0)), this.parse(a);
+          function u(n) {
+            (this.$L = Z(n.locale, null, !0)), this.parse(n);
           }
           var l = u.prototype;
           return (
-            (l.parse = function (a) {
+            (l.parse = function (n) {
               (this.$d = (function (h) {
-                var n = h.date,
-                  c = h.utc;
-                if (n === null) return new Date(NaN);
-                if (g.u(n)) return new Date();
-                if (n instanceof Date) return new Date(n);
-                if (typeof n == "string" && !/Z$/i.test(n)) {
-                  var d = n.match(ft);
-                  if (d) {
-                    var v = d[2] - 1 || 0,
-                      b = (d[7] || "0").substring(0, 3);
-                    return c
+                var a = h.date,
+                  d = h.utc;
+                if (a === null) return new Date(NaN);
+                if (g.u(a)) return new Date();
+                if (a instanceof Date) return new Date(a);
+                if (typeof a == "string" && !/Z$/i.test(a)) {
+                  var f = a.match(ct);
+                  if (f) {
+                    var v = f[2] - 1 || 0,
+                      b = (f[7] || "0").substring(0, 3);
+                    return d
                       ? new Date(
                           Date.UTC(
-                            d[1],
+                            f[1],
                             v,
-                            d[3] || 1,
-                            d[4] || 0,
-                            d[5] || 0,
-                            d[6] || 0,
+                            f[3] || 1,
+                            f[4] || 0,
+                            f[5] || 0,
+                            f[6] || 0,
                             b
                           )
                         )
                       : new Date(
-                          d[1],
+                          f[1],
                           v,
-                          d[3] || 1,
-                          d[4] || 0,
-                          d[5] || 0,
-                          d[6] || 0,
+                          f[3] || 1,
+                          f[4] || 0,
+                          f[5] || 0,
+                          f[6] || 0,
                           b
                         );
                   }
                 }
-                return new Date(n);
-              })(a)),
-                (this.$x = a.x || {}),
+                return new Date(a);
+              })(n)),
+                (this.$x = n.x || {}),
                 this.init();
             }),
             (l.init = function () {
-              var a = this.$d;
-              (this.$y = a.getFullYear()),
-                (this.$M = a.getMonth()),
-                (this.$D = a.getDate()),
-                (this.$W = a.getDay()),
-                (this.$H = a.getHours()),
-                (this.$m = a.getMinutes()),
-                (this.$s = a.getSeconds()),
-                (this.$ms = a.getMilliseconds());
+              var n = this.$d;
+              (this.$y = n.getFullYear()),
+                (this.$M = n.getMonth()),
+                (this.$D = n.getDate()),
+                (this.$W = n.getDay()),
+                (this.$H = n.getHours()),
+                (this.$m = n.getMinutes()),
+                (this.$s = n.getSeconds()),
+                (this.$ms = n.getMilliseconds());
             }),
             (l.$utils = function () {
               return g;
@@ -231,18 +242,18 @@
             (l.isValid = function () {
               return this.$d.toString() !== qe;
             }),
-            (l.isSame = function (a, h) {
-              var n = E(a);
-              return this.startOf(h) <= n && n <= this.endOf(h);
+            (l.isSame = function (n, h) {
+              var a = E(n);
+              return this.startOf(h) <= a && a <= this.endOf(h);
             }),
-            (l.isAfter = function (a, h) {
-              return E(a) < this.startOf(h);
+            (l.isAfter = function (n, h) {
+              return E(n) < this.startOf(h);
             }),
-            (l.isBefore = function (a, h) {
-              return this.endOf(h) < E(a);
+            (l.isBefore = function (n, h) {
+              return this.endOf(h) < E(n);
             }),
-            (l.$g = function (a, h, n) {
-              return g.u(a) ? this[h] : this.set(n, a);
+            (l.$g = function (n, h, a) {
+              return g.u(n) ? this[h] : this.set(a, n);
             }),
             (l.unix = function () {
               return Math.floor(this.valueOf() / 1e3);
@@ -250,182 +261,182 @@
             (l.valueOf = function () {
               return this.$d.getTime();
             }),
-            (l.startOf = function (a, h) {
-              var n = this,
-                c = !!g.u(h) || h,
-                d = g.p(a),
-                v = function (P, L) {
+            (l.startOf = function (n, h) {
+              var a = this,
+                d = !!g.u(h) || h,
+                f = g.p(n),
+                v = function (W, N) {
                   var F = g.w(
-                    n.$u ? Date.UTC(n.$y, L, P) : new Date(n.$y, L, P),
-                    n
+                    a.$u ? Date.UTC(a.$y, N, W) : new Date(a.$y, N, W),
+                    a
                   );
-                  return c ? F : F.endOf(A);
+                  return d ? F : F.endOf(L);
                 },
-                b = function (P, L) {
+                b = function (W, N) {
                   return g.w(
-                    n
+                    a
                       .toDate()
-                      [P].apply(
-                        n.toDate("s"),
-                        (c ? [0, 0, 0, 0] : [23, 59, 59, 999]).slice(L)
+                      [W].apply(
+                        a.toDate("s"),
+                        (d ? [0, 0, 0, 0] : [23, 59, 59, 999]).slice(N)
                       ),
-                    n
+                    a
                   );
                 },
-                p = this.$W,
+                _ = this.$W,
                 q = this.$M,
                 S = this.$D,
-                I = "set" + (this.$u ? "UTC" : "");
-              switch (d) {
+                R = "set" + (this.$u ? "UTC" : "");
+              switch (f) {
                 case B:
-                  return c ? v(1, 0) : v(31, 11);
+                  return d ? v(1, 0) : v(31, 11);
                 case O:
-                  return c ? v(1, q) : v(0, q + 1);
+                  return d ? v(1, q) : v(0, q + 1);
                 case Y:
                   var z = this.$locale().weekStart || 0,
-                    U = (p < z ? p + 7 : p) - z;
-                  return v(c ? S - U : S + (6 - U), q);
-                case A:
-                case W:
-                  return b(I + "Hours", 0);
+                    G = (_ < z ? _ + 7 : _) - z;
+                  return v(d ? S - G : S + (6 - G), q);
+                case L:
+                case k:
+                  return b(R + "Hours", 0);
                 case D:
-                  return b(I + "Minutes", 1);
-                case f:
-                  return b(I + "Seconds", 2);
+                  return b(R + "Minutes", 1);
                 case m:
-                  return b(I + "Milliseconds", 3);
+                  return b(R + "Seconds", 2);
+                case c:
+                  return b(R + "Milliseconds", 3);
                 default:
                   return this.clone();
               }
             }),
-            (l.endOf = function (a) {
-              return this.startOf(a, !1);
+            (l.endOf = function (n) {
+              return this.startOf(n, !1);
             }),
-            (l.$set = function (a, h) {
-              var n,
-                c = g.p(a),
-                d = "set" + (this.$u ? "UTC" : ""),
-                v = ((n = {}),
-                (n[A] = d + "Date"),
-                (n[W] = d + "Date"),
-                (n[O] = d + "Month"),
-                (n[B] = d + "FullYear"),
-                (n[D] = d + "Hours"),
-                (n[f] = d + "Minutes"),
-                (n[m] = d + "Seconds"),
-                (n[o] = d + "Milliseconds"),
-                n)[c],
-                b = c === A ? this.$D + (h - this.$W) : h;
-              if (c === O || c === B) {
-                var p = this.clone().set(W, 1);
-                p.$d[v](b),
-                  p.init(),
-                  (this.$d = p.set(W, Math.min(this.$D, p.daysInMonth())).$d);
+            (l.$set = function (n, h) {
+              var a,
+                d = g.p(n),
+                f = "set" + (this.$u ? "UTC" : ""),
+                v = ((a = {}),
+                (a[L] = f + "Date"),
+                (a[k] = f + "Date"),
+                (a[O] = f + "Month"),
+                (a[B] = f + "FullYear"),
+                (a[D] = f + "Hours"),
+                (a[m] = f + "Minutes"),
+                (a[c] = f + "Seconds"),
+                (a[o] = f + "Milliseconds"),
+                a)[d],
+                b = d === L ? this.$D + (h - this.$W) : h;
+              if (d === O || d === B) {
+                var _ = this.clone().set(k, 1);
+                _.$d[v](b),
+                  _.init(),
+                  (this.$d = _.set(k, Math.min(this.$D, _.daysInMonth())).$d);
               } else v && this.$d[v](b);
               return this.init(), this;
             }),
-            (l.set = function (a, h) {
-              return this.clone().$set(a, h);
+            (l.set = function (n, h) {
+              return this.clone().$set(n, h);
             }),
-            (l.get = function (a) {
-              return this[g.p(a)]();
+            (l.get = function (n) {
+              return this[g.p(n)]();
             }),
-            (l.add = function (a, h) {
-              var n,
-                c = this;
-              a = Number(a);
-              var d = g.p(h),
+            (l.add = function (n, h) {
+              var a,
+                d = this;
+              n = Number(n);
+              var f = g.p(h),
                 v = function (q) {
-                  var S = E(c);
-                  return g.w(S.date(S.date() + Math.round(q * a)), c);
+                  var S = E(d);
+                  return g.w(S.date(S.date() + Math.round(q * n)), d);
                 };
-              if (d === O) return this.set(O, this.$M + a);
-              if (d === B) return this.set(B, this.$y + a);
-              if (d === A) return v(1);
-              if (d === Y) return v(7);
-              var b = ((n = {}), (n[f] = i), (n[D] = r), (n[m] = s), n)[d] || 1,
-                p = this.$d.getTime() + a * b;
-              return g.w(p, this);
+              if (f === O) return this.set(O, this.$M + n);
+              if (f === B) return this.set(B, this.$y + n);
+              if (f === L) return v(1);
+              if (f === Y) return v(7);
+              var b = ((a = {}), (a[m] = i), (a[D] = r), (a[c] = s), a)[f] || 1,
+                _ = this.$d.getTime() + n * b;
+              return g.w(_, this);
             }),
-            (l.subtract = function (a, h) {
-              return this.add(-1 * a, h);
+            (l.subtract = function (n, h) {
+              return this.add(-1 * n, h);
             }),
-            (l.format = function (a) {
+            (l.format = function (n) {
               var h = this,
-                n = this.$locale();
-              if (!this.isValid()) return n.invalidDate || qe;
-              var c = a || "YYYY-MM-DDTHH:mm:ssZ",
-                d = g.z(this),
+                a = this.$locale();
+              if (!this.isValid()) return a.invalidDate || qe;
+              var d = n || "YYYY-MM-DDTHH:mm:ssZ",
+                f = g.z(this),
                 v = this.$H,
                 b = this.$m,
-                p = this.$M,
-                q = n.weekdays,
-                S = n.months,
-                I = function (L, F, ue, J) {
-                  return (L && (L[F] || L(h, c))) || ue[F].slice(0, J);
+                _ = this.$M,
+                q = a.weekdays,
+                S = a.months,
+                R = function (N, F, he, J) {
+                  return (N && (N[F] || N(h, d))) || he[F].slice(0, J);
                 },
-                z = function (L) {
-                  return g.s(v % 12 || 12, L, "0");
+                z = function (N) {
+                  return g.s(v % 12 || 12, N, "0");
                 },
-                U =
-                  n.meridiem ||
-                  function (L, F, ue) {
-                    var J = L < 12 ? "AM" : "PM";
-                    return ue ? J.toLowerCase() : J;
+                G =
+                  a.meridiem ||
+                  function (N, F, he) {
+                    var J = N < 12 ? "AM" : "PM";
+                    return he ? J.toLowerCase() : J;
                   },
-                P = {
+                W = {
                   YY: String(this.$y).slice(-2),
                   YYYY: g.s(this.$y, 4, "0"),
-                  M: p + 1,
-                  MM: g.s(p + 1, 2, "0"),
-                  MMM: I(n.monthsShort, p, S, 3),
-                  MMMM: I(S, p),
+                  M: _ + 1,
+                  MM: g.s(_ + 1, 2, "0"),
+                  MMM: R(a.monthsShort, _, S, 3),
+                  MMMM: R(S, _),
                   D: this.$D,
                   DD: g.s(this.$D, 2, "0"),
                   d: String(this.$W),
-                  dd: I(n.weekdaysMin, this.$W, q, 2),
-                  ddd: I(n.weekdaysShort, this.$W, q, 3),
+                  dd: R(a.weekdaysMin, this.$W, q, 2),
+                  ddd: R(a.weekdaysShort, this.$W, q, 3),
                   dddd: q[this.$W],
                   H: String(v),
                   HH: g.s(v, 2, "0"),
                   h: z(1),
                   hh: z(2),
-                  a: U(v, b, !0),
-                  A: U(v, b, !1),
+                  a: G(v, b, !0),
+                  A: G(v, b, !1),
                   m: String(b),
                   mm: g.s(b, 2, "0"),
                   s: String(this.$s),
                   ss: g.s(this.$s, 2, "0"),
                   SSS: g.s(this.$ms, 3, "0"),
-                  Z: d,
+                  Z: f,
                 };
-              return c.replace(mt, function (L, F) {
-                return F || P[L] || d.replace(":", "");
+              return d.replace(mt, function (N, F) {
+                return F || W[N] || f.replace(":", "");
               });
             }),
             (l.utcOffset = function () {
               return 15 * -Math.round(this.$d.getTimezoneOffset() / 15);
             }),
-            (l.diff = function (a, h, n) {
-              var c,
-                d = g.p(h),
-                v = E(a),
+            (l.diff = function (n, h, a) {
+              var d,
+                f = g.p(h),
+                v = E(n),
                 b = (v.utcOffset() - this.utcOffset()) * i,
-                p = this - v,
+                _ = this - v,
                 q = g.m(this, v);
               return (
                 (q =
-                  ((c = {}),
-                  (c[B] = q / 12),
-                  (c[O] = q),
-                  (c[Te] = q / 3),
-                  (c[Y] = (p - b) / 6048e5),
-                  (c[A] = (p - b) / 864e5),
-                  (c[D] = p / r),
-                  (c[f] = p / i),
-                  (c[m] = p / s),
-                  c)[d] || p),
-                n ? q : g.a(q)
+                  ((d = {}),
+                  (d[B] = q / 12),
+                  (d[O] = q),
+                  (d[Te] = q / 3),
+                  (d[Y] = (_ - b) / 6048e5),
+                  (d[L] = (_ - b) / 864e5),
+                  (d[D] = _ / r),
+                  (d[m] = _ / i),
+                  (d[c] = _ / s),
+                  d)[f] || _),
+                a ? q : g.a(q)
               );
             }),
             (l.daysInMonth = function () {
@@ -434,11 +445,11 @@
             (l.$locale = function () {
               return V[this.$L];
             }),
-            (l.locale = function (a, h) {
-              if (!a) return this.$L;
-              var n = this.clone(),
-                c = Z(a, h, !0);
-              return c && (n.$L = c), n;
+            (l.locale = function (n, h) {
+              if (!n) return this.$L;
+              var a = this.clone(),
+                d = Z(n, h, !0);
+              return d && (a.$L = d), a;
             }),
             (l.clone = function () {
               return g.w(this.$d, this);
@@ -458,20 +469,20 @@
             u
           );
         })(),
-        Le = K.prototype;
+        Ne = K.prototype;
       return (
-        (E.prototype = Le),
+        (E.prototype = Ne),
         [
           ["$ms", o],
-          ["$s", m],
-          ["$m", f],
+          ["$s", c],
+          ["$m", m],
           ["$H", D],
-          ["$W", A],
+          ["$W", L],
           ["$M", O],
           ["$y", B],
-          ["$D", W],
+          ["$D", k],
         ].forEach(function (u) {
-          Le[u[1]] = function (l) {
+          Ne[u[1]] = function (l) {
             return this.$g(l, u[0], u[1]);
           };
         }),
@@ -479,11 +490,11 @@
           return u.$i || (u(l, K, E), (u.$i = !0)), E;
         }),
         (E.locale = Z),
-        (E.isDayjs = oe),
+        (E.isDayjs = ue),
         (E.unix = function (u) {
           return E(1e3 * u);
         }),
-        (E.en = V[k]),
+        (E.en = V[j]),
         (E.Ls = V),
         (E.p = {}),
         E
@@ -491,23 +502,23 @@
     });
   })(de);
   var De = de.exports;
-  const X = Oe(De),
-    ce = (t) => X(t, void 0, !0).isValid(),
-    fe = (t, e) => (e === "now" && (e = he()), X(t).isBefore(e)),
-    me = (t, e) => (e === "now" && (e = he()), X(t).isAfter(e)),
-    Ie = (t, e) => {
-      e || j("dateBetween");
-      const [s, i] = _(e != null ? e : "");
-      return me(t, s) && fe(t, i);
+  const ee = Oe(De),
+    ce = (t) => ee(t, void 0, !0).isValid(),
+    me = (t, e) => (e === "now" && (e = fe()), ee(t).isBefore(e)),
+    ge = (t, e) => (e === "now" && (e = fe()), ee(t).isAfter(e)),
+    Re = (t, e) => {
+      e || P("dateBetween");
+      const [s, i] = p(e != null ? e : "");
+      return ge(t, s) && me(t, i);
     },
-    Re = (t) => {
+    Ie = (t) => {
       if (t.split(":").length < 3) for (; t.split(":").length < 3; ) t += ":00";
       return /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$/.test(t);
     },
-    G = (t, ...e) => !!t && t !== "",
+    U = (t, ...e) => !!t && t !== "",
     Be = (t) => !0,
-    Se = (t, e) => (e || j("in"), _(e).includes(t)),
-    Fe = (t, e) => (R(t) ? H(t, e) : se(t, e)),
+    Se = (t, e) => (e || P("in"), p(e).includes(t)),
+    Fe = (t, e) => (I(t) ? H(t, e) : ie(t, e)),
     xe = (t) =>
       typeof t == "boolean" ||
       (typeof t == "string" &&
@@ -519,12 +530,12 @@
           t === "yes" ||
           t === "no")),
     Ve = (t, e) => {
-      var [s, i] = _(e != null ? e : "");
-      return R(t)
-        ? H(t, i) && ie(t, s)
-        : !$(t) && !R(t)
+      var [s, i] = p(e != null ? e : "");
+      return I(t)
+        ? H(t, i) && re(t, s)
+        : !$(t) && !I(t)
         ? ce(t)
-          ? Ie(t, e)
+          ? Re(t, e)
           : ve(t, e)
         : ((s = Number(s)),
           (i = Number(i)),
@@ -532,46 +543,47 @@
             ? ((t = Number(t)), $(t) ? _e(t, i) && pe(t, s) : !1)
             : !1);
     },
-    Qe = (t, e) => {
+    Pe = (t, e) => {
       if (!e) throw new Error("The regex rule argument must not be empty");
-      return new RegExp(e).test(t);
+      const s = new X(e);
+      return new RegExp(s.replacePipes()).test(t);
     },
-    We = (t, e) =>
+    Qe = (t, e) =>
       e === "string"
-        ? !N(t) || t.length === 0
+        ? !A(t) || t.length === 0
           ? !1
           : !/\d/.test(t)
         : e === "number"
         ? $(t)
         : !1,
-    Pe = (t, ...e) =>
+    ke = (t, ...e) =>
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
         t
       ),
-    ee = (t, e) => (t && N(t) ? t.length >= Number(e) : !1),
-    te = (t, e) => (t ? (N(t) ? t.length <= Number(e) : !1) : !0),
-    N = (t) => typeof t == "string",
-    je = (t) => /^(ftp|http|https):\/\/[^ "]+$/.test(t),
-    ke = (t) =>
+    te = (t, e) => (t && A(t) ? t.length >= Number(e) : !1),
+    se = (t, e) => (t ? (A(t) ? t.length <= Number(e) : !1) : !0),
+    A = (t) => typeof t == "string",
+    We = (t) => /^(ftp|http|https):\/\/[^ "]+$/.test(t),
+    je = (t) =>
       typeof t != "string" || t.length === 0 ? !1 : /^[A-Z]/.test(t),
     ze = (t) =>
       typeof t != "string" || t.length === 0 ? !1 : /^[a-z]/.test(t),
-    Ue = (t, e) => {
-      e || j("startWith");
-      const s = _(e != null ? e : "");
-      return N(t) ? s.some((i) => t.startsWith(i)) : !1;
-    },
     Ge = (t, e) => {
-      e || j("endWith");
-      const s = _(e != null ? e : "");
-      return N(t) ? s.some((i) => t.endsWith(i)) : !1;
+      e || P("startWith");
+      const s = p(e != null ? e : "");
+      return A(t) ? s.some((i) => t.startsWith(i)) : !1;
     },
-    ge = (t, e) => {
-      e || j("contains");
-      const s = _(e != null ? e : "");
-      return N(t) ? s.every((i) => t.includes(i)) : !1;
+    Ue = (t, e) => {
+      e || P("endWith");
+      const s = p(e != null ? e : "");
+      return A(t) ? s.some((i) => t.endsWith(i)) : !1;
     },
-    se = (t, e) => {
+    He = (t, e) => {
+      e || P("contains");
+      const s = p(e != null ? e : "");
+      return A(t) ? s.every((i) => t.includes(new X(i).replaceSpaces())) : !1;
+    },
+    ie = (t, e) => {
       if (!$(e)) throw new Error("The length rule argument must be an integer");
       return (
         (e = parseInt(e)),
@@ -581,25 +593,31 @@
         Array.isArray(t) ? t.length === e : !1
       );
     },
-    He = (t) => {
+    Ye = (t) => {
       const s = /[A-Z]/.test(t),
         i = /[a-z]/.test(t),
         r = /\d/.test(t),
         o = /[!@#$%^&*(),.?":{}|<>]/.test(t);
       return !(t.length < 8 || !s || !i || !r || !o);
     },
-    Ye = (t) => (!N(t) || t.length === 0 ? !1 : /^[a-zA-Z]/.test(t)),
-    Ze = (t) => (typeof t != "string" ? !1 : /[a-zA-Z]/.test(t)),
-    Ke = (t, e) => !ge(t, e),
-    Je = (t, e) => t === t.toLocaleUpperCase(),
-    Xe = (t, e) => t === t.toLocaleLowerCase(),
-    ve = (t, e) => {
-      const [s, i] = _(e != null ? e : "");
-      return ee(t, s) && te(t, i);
+    Ze = (t) => (!A(t) || t.length === 0 ? !1 : /^[a-zA-Z]/.test(t)),
+    Ke = (t) => (typeof t != "string" ? !1 : /[a-zA-Z]/.test(t)),
+    Je = (t, e) => {
+      const s = p(e);
+      return (
+        s.length || P("excludes"),
+        A(t) ? !s.some((i) => t.includes(new X(i).replaceSpaces())) : !0
+      );
     },
-    R = (t) => t instanceof File || t instanceof Blob,
+    Xe = (t, e) => t === t.toLocaleUpperCase(),
+    et = (t, e) => t === t.toLocaleLowerCase(),
+    ve = (t, e) => {
+      const [s, i] = p(e != null ? e : "");
+      return te(t, s) && se(t, i);
+    },
+    I = (t) => t instanceof File || t instanceof Blob,
     H = (t, e) => {
-      if (R(t)) {
+      if (I(t)) {
         const i = t.size;
         let r;
         const o =
@@ -608,22 +626,22 @@
           throw new Error(
             "Invalid maxSize format. Please use valid format like '1KB', '1MB', etc."
           );
-        const m = parseFloat(o[1]),
-          f = o[3].toUpperCase();
+        const c = parseFloat(o[1]),
+          m = o[3].toUpperCase();
         return (
-          f === "KB"
-            ? (r = m * 1024)
-            : f === "MB"
-            ? (r = m * 1024 * 1024)
-            : f === "GB"
-            ? (r = m * 1024 * 1024 * 1024)
-            : (r = m),
+          m === "KB"
+            ? (r = c * 1024)
+            : m === "MB"
+            ? (r = c * 1024 * 1024)
+            : m === "GB"
+            ? (r = c * 1024 * 1024 * 1024)
+            : (r = c),
           i <= r
         );
       } else return !1;
     },
-    ie = (t, e) => {
-      if (R(t)) {
+    re = (t, e) => {
+      if (I(t)) {
         const i = t.size;
         let r;
         const o =
@@ -632,30 +650,30 @@
           throw new Error(
             "Invalid minSize format. Please use valid format like '1KB', '1MB', etc."
           );
-        const m = parseFloat(o[1]),
-          f = o[3].toUpperCase();
+        const c = parseFloat(o[1]),
+          m = o[3].toUpperCase();
         return (
-          f === "KB"
-            ? (r = m * 1024)
-            : f === "MB"
-            ? (r = m * 1024 * 1024)
-            : f === "GB"
-            ? (r = m * 1024 * 1024 * 1024)
-            : (r = m),
+          m === "KB"
+            ? (r = c * 1024)
+            : m === "MB"
+            ? (r = c * 1024 * 1024)
+            : m === "GB"
+            ? (r = c * 1024 * 1024 * 1024)
+            : (r = c),
           i >= r
         );
       } else return !1;
     },
     pe = (t, e) => {
-      if (R(t)) return ie(t, e);
+      if (I(t)) return re(t, e);
       if ((t == null && (t = 0), !$(e)))
         throw new Error("Min rule parameter must be an integer");
-      return $(t) ? Number(t) >= Number(e) : ee(t, e);
+      return $(t) ? Number(t) >= Number(e) : te(t, e);
     },
     _e = (t, e) => {
-      if (R(t)) return H(t, e);
+      if (I(t)) return H(t, e);
       if (!$(e)) throw new Error("Min rule parameter must be an integer");
-      return t == null && (t = 0), $(t) ? Number(t) <= Number(e) : te(t, e);
+      return t == null && (t = 0), $(t) ? Number(t) <= Number(e) : se(t, e);
     },
     be = (t) => ($(t) ? Number.isInteger(Number(t)) : !1),
     $ = (t) =>
@@ -668,7 +686,7 @@
       if (!$(e)) throw new Error("Modulo rule parameter must be an integer");
       return $(t) ? Number(t) % Number(e) === 0 : !1;
     },
-    et = {
+    tt = {
       default: "This field is invalid",
       required: "This field is required",
       email: "Please enter a valid email address",
@@ -721,62 +739,6 @@
       modulo: "The value of :field field must be a multiple of :arg0",
       mod: "The value of :field field must be a multiple of :arg0",
       only: "The format of this field is not accepted, as it contains non-allowed characters",
-    },
-    tt = {
-      default: "Ce champ est invalide",
-      required: "Ce champ est requis",
-      email: "Veuillez entrer une adresse e-mail valide",
-      maxlength: "Le nombre maximal de caractères autorisés est: :arg0",
-      minlength: "Le nombre minimal de caractères autorisés est: :arg0",
-      min: "Le champ :field doit être supérieur ou égal à ':arg0'",
-      max: "Le champ :field doit être inférieur ou égal à ':arg0'",
-      string: "Veuillez entrer une chaîne de caractères",
-      between:
-        "La valeur de ce champ doit être comprise entre ':arg0' et ':arg1'",
-      startWith: "Le champ :field doit commencer par ':arg0'",
-      endWith: "Le champ :field doit se terminer par ':arg0'",
-      contains: "Le champ :field doit contenir la valeur ':arg0'",
-      in: "Veuillez choisir une valeur correcte pour le champ :field",
-      integer: "Le champ :field doit être un entier",
-      int: "Le champ :field doit être un entier",
-      number: "Ce champ doit être un nombre",
-      numeric: "Ce champ doit être un nombre",
-      file: "Ce champ doit être un fichier",
-      url: "Ce champ doit être une URL valide",
-      length: "La taille de ce champ doit être :arg0",
-      len: "La taille de ce champ doit être :arg0",
-      maxFileSize: "La taille du fichier doit être inférieure à :arg0.",
-      modulo: "La valeur du champ :field doit être un multiple de :arg0",
-      minFileSize: "La taille du fichier doit être supérieure à :arg0.",
-      size: "La taille de ce champ doit être inférieure ou égale à :arg0",
-      boolean: "Ce champ doit être un booléen (oui ou non)",
-      startWithUpper: "Ce champ doit commencer par une lettre majuscule",
-      startWithLower: "Ce champ doit commencer par une lettre minuscule",
-      nullable: "",
-      password:
-        "Le mot de passe doit comporter au moins 8 caractères et inclure une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial.",
-      date: "Ce champ doit être une date valide",
-      before: "La date doit être antérieure à (:arg0)",
-      after: "La date doit être postérieure à (:arg0)",
-      same: "Ce champ doit être identique à la valeur du champ :arg0",
-      requiredIf:
-        "Le champ :field est requis lorsque le champ :arg0 a la valeur actuelle",
-      requiredWhen:
-        "Le champ :field est requis lorsque les champs :arg0 sont présents",
-      phone: "Ce numéro de téléphone semble être invalide",
-      time: "Le champ :field doit être une heure valide.",
-      startWithLetter: "Le champ :field doit commencer par une lettre",
-      excludes: "Le champ :field ne doit pas contenir :arg0.",
-      hasLetter: "Ce champ doit contenir au moins une lettre",
-      regex: "Ce champ est invalide.",
-      lower: "Ce champ doit être en minuscule",
-      upper: "Ce champ doit être en majuscule",
-      fileBetween:
-        "La taille du fichier doit être comprise entre :arg0 et :arg1",
-      stringBetween:
-        "Le nombre de caractères autorisés doit être compris entre :arg0 et :arg1",
-      mod: "La valeur du champ :field doit être un multiple de :arg0",
-      only: "Le format de ce champ n'est pas accepté, il contient des caractères non autorisés",
     },
     w = class {
       static getMessages(t) {
@@ -837,7 +799,7 @@
         }
       }
       static local(t) {
-        if (!N(t) || !t.length)
+        if (!A(t) || !t.length)
           throw new Error("The language must be a valid string");
         w._useLang = t;
       }
@@ -850,8 +812,8 @@
   (T._useLang = null),
     (T.DEFAULT_LANG = "en"),
     (T.LANG = w.DEFAULT_LANG),
-    (T._message = { en: et, fr: tt });
-  const re = {
+    (T._message = { en: tt });
+  const ne = {
     invalidClass: "is-invalid",
     validClass: "",
     local: { lang: T.DEFAULT_LANG },
@@ -869,7 +831,7 @@
       return s;
     }
     parseMessage(e, s, i, r) {
-      const o = this._createParamObject(_(r != null ? r : ""));
+      const o = this._createParamObject(p(r != null ? r : ""));
       return (o.field = e), (i = this._replace(i, o)), i;
     }
     setMessages(e) {
@@ -921,7 +883,7 @@
       var r;
       const s = /{(\d+(?:,\s*\d+)*)}/g;
       return (r = [...e.matchAll(s)].map((o) =>
-        o[1].split(",").map((m) => parseInt(m.trim()))
+        o[1].split(",").map((c) => parseInt(c.trim()))
       )[0]) != null
         ? r
         : [];
@@ -963,7 +925,7 @@
       );
     }
   }
-  class at {
+  class nt {
     constructor(e, s) {
       (this._passed = !1),
         (this.feedbackElement = null),
@@ -984,7 +946,7 @@
           invalidClass: "is-invalid",
           type: "text",
         }),
-        (this.validator = new dt(this.param)),
+        (this.validator = new ft(this.param)),
         this.setInputElement(e),
         this._setParams(s),
         this.setRules(s == null ? void 0 : s.rules),
@@ -999,13 +961,15 @@
     setRules(e) {
       var r;
       let s = (r = this.inputElement.dataset.qvRules) != null ? r : "";
-      if (s)
-        for (const o of s.split("|"))
-          if (Q.hasRule(y(o).ruleName)) this.rules.push(o);
+      if (s) {
+        const o = s.split("|").filter((c) => c.length > 0);
+        for (const c of o)
+          if (Q.hasRule(y(c).ruleName)) this.rules.push(c);
           else
             throw new Error(
-              `The validation rule ${o} is not supported by QuickV`
+              `The validation rule ${c} is not supported by QuickV`
             );
+      }
       const i = new rt(this.inputElement);
       return (
         (this.rules = i.merge(e != null ? e : this.rules)),
@@ -1116,15 +1080,15 @@
       const s = this.inputElement.dataset.qvMessages;
       let i = {};
       for (let o = 0; o < this.rules.length; o++) {
-        let m =
-          (r = s == null ? void 0 : s.split("|").map((A) => A.trim())) != null
+        let c =
+          (r = s == null ? void 0 : s.split("|").map((L) => L.trim())) != null
             ? r
             : [];
-        m && (m = new it(this.rules, m).getMessages());
-        const f = m !== void 0 ? m[o] : "",
+        c && (c = new it(this.rules, c).getMessages());
+        const m = c !== void 0 ? c[o] : "",
           D = y(this.rules[o]).ruleName;
-        typeof f == "string" && f.length > 0
-          ? (i[D] = f)
+        typeof m == "string" && m.length > 0
+          ? (i[D] = m)
           : (i[D] = T.getRuleMessage(D, T.getLocal()));
       }
       typeof e != "undefined" &&
@@ -1149,7 +1113,7 @@
         (this.param = C(C({}, this.param), e));
     }
   }
-  class nt extends at {
+  class at extends nt {
     constructor(e, s) {
       super(e, s), (this._emitOnPasses = !0), (this._emitOnFails = !0);
     }
@@ -1256,7 +1220,7 @@
       return /^(\+33|0033|0)[1-9](\d{2}){4}$/.test(this._value);
     }
     validPhoneNumber() {
-      if (!(N(this._value) || $(this._value))) return !1;
+      if (!(A(this._value) || $(this._value))) return !1;
       if (typeof this.code == "string") {
         const e = [],
           s = this.code.split(",").map((i) => i.trim().toUpperCase());
@@ -1309,51 +1273,51 @@
     };
   let Q = x;
   Q.rules = {
-    required: G,
-    email: Pe,
-    maxlength: te,
-    minlength: ee,
+    required: U,
+    email: ke,
+    maxlength: se,
+    minlength: te,
     min: pe,
     max: _e,
-    string: N,
+    string: A,
     between: Ve,
-    startWith: Ue,
-    endWith: Ge,
-    contains: ge,
+    startWith: Ge,
+    endWith: Ue,
+    contains: He,
     in: Se,
     integer: be,
     int: be,
     modulo: we,
     number: $,
     numeric: $,
-    url: je,
-    length: se,
-    len: se,
-    file: R,
+    url: We,
+    length: ie,
+    len: ie,
+    file: I,
     maxFileSize: H,
-    minFileSize: ie,
+    minFileSize: re,
     size: Fe,
     boolean: xe,
-    startWithUpper: ke,
+    startWithUpper: je,
     nullable: Be,
     startWithLower: ze,
-    password: He,
+    password: Ye,
     date: ce,
-    before: fe,
-    after: me,
+    before: me,
+    after: ge,
     phone: ot,
-    time: Re,
-    startWithLetter: Ye,
-    excludes: Ke,
-    hasLetter: Ze,
-    regex: Qe,
-    lower: Xe,
-    upper: Je,
+    time: Ie,
+    startWithLetter: Ze,
+    excludes: Je,
+    hasLetter: Ke,
+    regex: Pe,
+    lower: et,
+    upper: Xe,
     stringBetween: ve,
     mod: we,
-    only: We,
+    only: Qe,
   };
-  class ae extends nt {
+  class ae extends at {
     constructor(e, s) {
       super(e, s);
     }
@@ -1419,23 +1383,23 @@
       return s ? e === this.getInputValueByName(s) : !1;
     }
     requiredIf(e, s) {
-      const [i, ...r] = _(s != null ? s : "");
+      const [i, ...r] = p(s != null ? s : "");
       if (i && r.length > 0) {
         const o = this.getInputValueByName(i);
-        return r.includes(o) ? G(e) : !0;
+        return r.includes(o) ? U(e) : !0;
       }
       return !1;
     }
     requiredWhen(e, s) {
-      const [i, ...r] = _(s != null ? s : "");
+      const [i, ...r] = p(s != null ? s : "");
       return i && r.length > 0
-        ? r.some((m) => (console.log(m), G(this.getInputValueByName(m))))
-          ? G(e)
+        ? r.some((c) => (console.log(c), U(this.getInputValueByName(c))))
+          ? U(e)
           : !0
         : !1;
     }
   }
-  class ne {
+  class le {
     constructor(e, s) {
       (this._passed = !1),
         (this._emitOnPasses = !0),
@@ -1644,23 +1608,23 @@
   }
   class ye {
     constructor() {
-      this.config = re;
+      this.config = ne;
     }
     init(e) {
       this.setConfig(e),
         document.querySelectorAll("form").forEach((s) => {
-          new ne(s).init();
+          new le(s).init();
         });
     }
     rule(e, s, i) {
       Q.rule(e, s, i);
     }
     setConfig(e) {
-      (this.config = re),
+      (this.config = ne),
         e && typeof e == "object" && (this.config = C(C({}, this.config), e));
     }
   }
-  class dt {
+  class ft {
     constructor(e) {
       (this._rulesToMap = ["min", "max", "between", "size"]),
         (this._rulesFromTypes = {
@@ -1700,25 +1664,25 @@
       for (const s of e) {
         let { ruleName: i, params: r } = y(s),
           o = this._getRuleToRunName(i);
-        const m = Q.getRule(o),
-          f = this._makeRuleExcutedInstance(o, i);
-        if (((f.params = r), !m))
+        const c = Q.getRule(o),
+          m = this._makeRuleExcutedInstance(o, i);
+        if (((m.params = r), !c))
           throw new Error(`The rule ${i} is not defined`);
         if (
-          (f.wasRunWith(this._value)
-            ? (f.passed = f.passed)
-            : ((f.passed = m(this._value, r)),
-              (f.valueTested = this._value),
-              (f.run = !0)),
+          (m.wasRunWith(this._value)
+            ? (m.passed = m.passed)
+            : ((m.passed = c(this._value, r)),
+              (m.valueTested = this._value),
+              (m.run = !0)),
           this._failOnfirst)
         ) {
-          if (!f.passed) {
-            this._parseRuleMessage(f), this._addRuleExecuted(f);
+          if (!m.passed) {
+            this._parseRuleMessage(m), this._addRuleExecuted(m);
             break;
           }
         } else
-          f.passed ? (f.message = "") : this._parseRuleMessage(f),
-            this._addRuleExecuted(f);
+          m.passed ? (m.message = "") : this._parseRuleMessage(m),
+            this._addRuleExecuted(m);
       }
       return !this.hasErrors();
     }
@@ -1743,7 +1707,7 @@
     }
     _makeRuleExcutedInstance(e, s) {
       let i = this._ruleExecuted.find((r) => r.isNamed(e));
-      return i != null ? i : new ct(e, s);
+      return i != null ? i : new dt(e, s);
     }
     _addRuleExecuted(e) {
       this._ruleExecuted.includes(e) || this._ruleExecuted.push(e);
@@ -1789,13 +1753,13 @@
         const i = this._rulesFromTypes[e];
         if (i) {
           const r = i[this._inputType];
-          N(r) && r.length > 0 && (s = r);
+          A(r) && r.length > 0 && (s = r);
         }
       }
       return s;
     }
   }
-  class ct {
+  class dt {
     constructor(e, s) {
       (this.passed = !1),
         (this.message = null),
@@ -1812,11 +1776,11 @@
   }
   typeof window != "undefined" &&
     ((window.QvInput = (Ee = window.QvInput) != null ? Ee : ae),
-    (window.QvForm = (Me = window.QvForm) != null ? Me : ne),
+    (window.QvForm = (Me = window.QvForm) != null ? Me : le),
     (window.Quickv = ($e = window.Quickv) != null ? $e : ye)),
     (M.Quickv = ye),
-    (M.QvConfig = re),
-    (M.QvForm = ne),
+    (M.QvConfig = ne),
+    (M.QvForm = le),
     (M.QvInput = ae),
     Object.defineProperty(M, Symbol.toStringTag, { value: "Module" });
 });

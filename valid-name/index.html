@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quickv valide form contact</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css"
+      integrity="sha384-b6lVK+yci+bfDmaY1u0zE8YYJt0TZxLEAFyYSLHId4xoVvsrQu3INevFKo+Xir8e"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="../style.css" />
+  </head>
+  <body>
+    <form action="">
+      <h3 style="text-align: center">Validation de nom</h3>
+      <p style="text-align: center">
+        J'ai utilisé <a href="https://github.com/quick-v/quickv">Quickv</a> pour
+        faire la validation. <br />
+        Vous pouvez prendre le code source
+        <a href="https://github.com/Claudye/quickv-example">ici</a>
+      </p>
+      <div class="form-group">
+        <input
+          type="text"
+          id="name"
+          name="name"
+          data-qv-rules="required|only:string|startWithUpper|between:2,32|excludes:@,*,/"
+          data-qv-messages="Le nom est requies | Le nom ne doit pas contenir des chiffres | Le nom doit commencer par une lettre majuscule | Veuillez saisir entre 2 et 32 caractères | Veuillez renseigner un nom français valide"
+        />
+        <div class="alert alert-danger" role="alert">
+          <div class="triangle"></div>
+          <div data-qv-feedback="name"></div>
+        </div>
+      </div>
+
+      <p>
+        <button type="submit" value="Submit" data-qv-submit>Envoyer</button>
+      </p>
+    </form>
+    <script src="../quickv.js"></script>
+
+    <script>
+      const qv = new Quickv();
+      qv.init();
+    </script>
+  </body>
+</html>
