@@ -1,27 +1,5 @@
 @charset "UTF-8";
-/*** LTR websites ***/
-/**/
-/*===================================================
-Project: flex-it - IT Solutions & Business services Responsive HTML5 Bootstrap5  landing-page Template 
-Auther: aminThemes
-Version: 1.0
-Last change: 30 November 2022
-Template Description: IT Solutions & Business services Responsive HTML5 Bootstrap5  landing-page Template 
-====================================================*/
-/*==
-- global-rules and helper classes
-- page-header
-- page-hero 
-- features
-- faq
-- contact-us 
-- take-action 
-- page-footer 
-- 404 Page
-- stats
-- Dark Theme Rules
-===*/
-/* start global, helper classes , Components Rules*/
+
 :root {
   /*Colors CSS Varibales*/
   /*================  main-color values */
@@ -66,7 +44,7 @@ Template Description: IT Solutions & Business services Responsive HTML5 Bootstra
   /*================  warning-color values */
   --clr-warning: #9b6a01;
   --clr-warning-rgb: 155, 106, 1;
-  --ltr-main-font-f: "Jost", "sans-serif";
+  --ltr-main-font-f: "Jost", "Outfit", "sans-serif";
   --rtl-main-font-f: var(--ltr-main-font-f);
 }
 
@@ -1708,10 +1686,10 @@ body.rounded-btns .read-more {
   background-color: var(--clr-main) !important;
 }
 @media (max-width: 1999px) {
-  .is-sticky.header-basic .menu-link {
+  .is-sticky.header-basic .show .menu-link {
     color: var(--clr-white) !important;
   }
-  .is-sticky.header-basic .menu-link::before {
+  .is-sticky.header-basic .show .menu-link::before {
     background-color: var(--clr-white) !important;
   }
 }
