@@ -3506,3 +3506,7 @@ button.qvDisabled:hover {
 .input-wrapper textarea[data-qv-valid="0"] + label {
   color: var(--clr-danger);
 }
+
+.text-capitalize {
+  text-transform: capitalize !important;
+}
